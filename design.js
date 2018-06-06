@@ -1,12 +1,8 @@
 const canvas = document.querySelector('#canvas');
+let timer = 2000;
 
-const colors = () => {
-    const letters = '0123456789ABCDEF';
-    let hex = '#';
-    for (let i = 0; i < 6; i++) {
-        hex += letters[Math.floor(Math.random() * 16)];
-    }
-    return hex;
+const color = () => {
+    return '#FF00AA';
 }
 
 const makeGrid = () => {
@@ -17,17 +13,25 @@ const makeGrid = () => {
         for (let j = 0; j < 4; j++) {
             td = document.createElement('td');
             tr.appendChild(td);
+            td.setAttribute('class', 'table-cells')
         }
     }   
 }
 
-const changeColor = () => {
-    let cells = document.querySelectorAll('td');
-    cells.forEach(cell => {
-        cell.style.backgroundColor = colors();
-    });
-}
+setInterval(() => {
+    let cells = document.querySelectorAll('.table-cells');
+       timer -= 1000;
+       /* if (current color === previous color) {
+           return;
+        } elseif (timer <= 0) {
+            currentColor = color();
+            one of the cell.style.backgroundColor = currentColor;
+            previousColor = currentColor;
+        } else {
+            return;
+        }*/
+}, 1000);
 
 
 makeGrid();
-changeColor();
+color();
