@@ -1,19 +1,15 @@
-table,
-tr,
-td {
-  border: 1px solid black;
-}
-
-table {
-  border-collapse: collapse;
+#canvas {
+  display: flex;
+  flex-wrap: wrap;
+  width: 240px;
+  height: 240px;
   margin: 0 auto;
+  border: solid;
 }
 
-tr {
-  height: 20px;
+.cell {
+  flex: 0 0 calc(240px / 4);
+  height: calc(240px / 4);
+  border: 0.5px solid;
+  box-sizing: border-box;
 }
-
-td {
-  width: 20px;
-}
-

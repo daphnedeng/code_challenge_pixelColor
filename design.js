@@ -2,52 +2,59 @@
 
 const canvas = document.querySelector('#canvas');
 
-let time = 2000, init_state = [], i = 0;
+let
+  time = 2000,
+  init_state = [],
+  i = 0,
+  num_grid = 16;
 
 let getTimeStamp = () => {
-    return new Date().getTime()
+  return new Date().getTime()
 };
 
 const genColor = () => {
-    let color='rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')';
-    return color;
+  let color='rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')';
+  return color;
 };
 
 const makeGrid = () => {
-    while (i < 4*4) {
-        //store time, as the "previous timestamp"
-        init_state.push({
-            timestamp: getTimeStamp()
-        });
-        i++;
-    }
-
-    //make a 4x4 table
-    let tr, td;
-    for (let i = 0; i < 4; i++) {
-        tr = document.createElement('tr');
-        canvas.appendChild(tr);
-        for (let j = 0; j < 4; j++) {
-            td = document.createElement('td');
-            tr.appendChild(td);
-        }
-    } 
+  while (i < num_grid) {
+    let color = genColor();
+    init_state.push({
+      id: i,
+      timestamp: getTimeStamp()      
+    });
+    i++
+  }
+  init_state.forEach(element => {
+    let cell = document.createElement('div');
+    cell.className = 'cell';
+    cell.timestamp = element.timestamp;
+    cell.id = element.id
+    canvas.appendChild(cell);
+  });
 }
 
 setInterval(() => {
-    let td = canvas.querySelectorAll('td');
-    // fandom index 0-15
-    let tdIndex = Math.floor(Math.random() * td.length);
-    //get current time
-    let now = getTimeStamp(); 
-    let state = init_state[tdIndex];
-    //compare time of one of cells
-    if (now - state.timestamp >= time) {        
-        td[tdIndex].style.backgroundColor = genColor();
-        //update timestamp
-        state.timestamp = now;
-    }  
+
+  let tdIndex, now; 
+  let td = canvas.querySelectorAll('.cell');
+
+  do {
+    //keep searching until find one that pass 2 seconds
+    tdIndex = Math.floor(Math.random() * num_grid);
+    now = getTimeStamp(); 
+    let diff = now - td[tdIndex].timestamp;
+    if(diff > time) {
+      break;
+    }
+  } while (true);
+
+  //change background color     
+  td[tdIndex].style.backgroundColor = genColor();
+  //update timestamp
+  td[tdIndex].timestamp = now;
+  
 }, 250)
 
 makeGrid();
-
